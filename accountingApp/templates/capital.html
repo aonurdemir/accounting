@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if msg %}
+        {{ msg }}
+        <a href="{% url 'home' %}">Go to home</a>
+    {% endif %}
+    {% if form %}
+        <h2>Create Capital</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create</button>
+        </form>
+    {% endif %}
+{% endblock %}

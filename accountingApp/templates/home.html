@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ msg }}
+    <a href="{% url 'capital' %}">Create Capital</a>
+    <p>Your capital: {{ user.capital.amount }}</p>
+
+
+{% endblock %}
