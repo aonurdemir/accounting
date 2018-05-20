@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <a href="{% url 'home' %}">Go to home</a>
+    {% if accountingBooks %}
+        <table>
+            {% for book in accountingBooks %}
+                <tr>
+                    <td>{{ book }}</td>
+                    <td>{{ book.balance }}</td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    {% if form %}
+        <h2>Create Accounting Book</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create</button>
+        </form>
+    {% endif %}
+{% endblock %}

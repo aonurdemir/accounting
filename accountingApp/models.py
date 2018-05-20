@@ -55,6 +55,7 @@ class Transaction(models.Model):
 
 class Installment(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    accounting_book = models.ForeignKey(AccountingBook, null=True, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255)
     amount = models.FloatField(blank=False)
     count = models.IntegerField(blank=False)
