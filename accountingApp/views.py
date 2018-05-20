@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 
 # Create your views here.
-from accountingApp.forms import CapitalForm, AccountingBookForm
+from accountingApp.forms import CapitalForm, AccountingBookForm, TransactionForm
+from accountingApp.models import Account, AccountingBook
 
 
 @login_required
@@ -61,4 +62,24 @@ def accounting_book(request):
         return render(
             request,
             'accounting_book.html', payload
+        )
+
+
+def accounting_book_transaction(request, accounting_book_id):
+    if request.method == 'POST':
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('transaction')
+    else:
+        form = TransactionForm()
+        # form.fields["accounting_book"].queryset = AccountingBook.objects.filter(id=accounting_book_id)
+        form.fields["accounting_book"].initial = AccountingBook.objects.get(pk=accounting_book_id).id
+        payload = {'form': form, }
+        if AccountingBook.objects.get(pk=accounting_book_id).transaction_set.count() > 0:
+            payload['transactions'] = AccountingBook.objects.get(pk=accounting_book_id).transaction_set.all()
+
+        return render(
+            request,
+            'transaction.html', payload
         )

@@ -2,20 +2,17 @@
 
 {% block content %}
     <a href="{% url 'home' %}">Go to home</a>
-    <a href="{% url 'accounting_book_transaction' accounting_book_id=2 %}">Create a transaction</a>
-    {% if accountingBooks %}
+    {% if transactions %}
         <table>
-            {% for book in accountingBooks %}
+            {% for transaction in transactions %}
                 <tr>
-                    <td>{{ book }}</td>
-                    <td>{{ book.balance }}</td>
-
+                    <td>{{ transaction }}</td>
                 </tr>
             {% endfor %}
         </table>
     {% endif %}
     {% if form %}
-        <h2>Create Accounting Book</h2>
+        <h2>Create Transaction</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
