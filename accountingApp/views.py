@@ -73,8 +73,9 @@ def accounting_book_transaction(request, accounting_book_id):
             return redirect('transaction')
     else:
         form = TransactionForm()
-        # form.fields["accounting_book"].queryset = AccountingBook.objects.filter(id=accounting_book_id)
+        form.fields["accounting_book"].queryset = AccountingBook.objects.filter(id=accounting_book_id)
         form.fields["accounting_book"].initial = AccountingBook.objects.get(pk=accounting_book_id).id
+        form.fields["accounting_book"].empty_label = None
         payload = {'form': form, }
         if AccountingBook.objects.get(pk=accounting_book_id).transaction_set.count() > 0:
             payload['transactions'] = AccountingBook.objects.get(pk=accounting_book_id).transaction_set.all()
