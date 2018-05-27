@@ -27,10 +27,11 @@ class Account(models.Model):
 
 class AccountingBook(models.Model):
     name = models.CharField(max_length=255)
-    user = models.ManyToManyField(User)
+    user = models.ManyToManyField(User, through='AccountingBookUser', through_fields=('accounting_book', 'user',), )
     capital = models.ForeignKey(Capital, on_delete=models.DO_NOTHING)
     balance = models.FloatField(blank=False, default=0.0)
-    accounts = models.ManyToManyField(Account)
+    accounts = models.ManyToManyField(Account, through='AccountingBookAccount',
+                                      through_fields=('accounting_book', 'account',), )
 
     def __str__(self):
         return self.name
@@ -40,6 +41,16 @@ class AccountingBook(models.Model):
 
     def sub_amount(self, amount):
         self.balance -= amount
+
+
+class AccountingBookUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    accounting_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE)
+
+
+class AccountingBookAccount(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    accounting_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE)
 
 
 class Transaction(models.Model):
